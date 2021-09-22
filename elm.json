@@ -1,9 +1,9 @@
 {
     "type": "package",
     "name": "emilianobovetti/elm-toast",
-    "summary": "Crispy toasts ready to be served",
+    "summary": "Also known as snackbars or pop-up notifications",
     "license": "BSD-3-Clause",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "exposed-modules": [
         "Toast"
     ],

@@ -1,8 +1,10 @@
 # elm-toast
 
-Crispy toasts served just as you like in the Elm architecture.
+A simple way to implement toast messages, [pop-up notifications](https://en.wikipedia.org/wiki/Pop-up_notification) or snackbars in the Elm architecture.
 
 `elm-toast` is a highly customizable library that handles a toast stack for you.
+
+See online examples of a [trivial app](https://ellie-app.com/fz2FLpBJX4Sa1) and a [full-fledged thing](https://ellie-app.com/fz2DPCTmyvXa1) or run [example apps](https://github.com/emilianobovetti/elm-toast/tree/master/examples) on your machine.
 
 ## Toast
 
@@ -210,20 +212,6 @@ update msg model =
         ToastMsg tmsg ->
             Toast.update tmsg model.tray
                 |> Toast.tuple ToastMsg model
-```
-
-You can also find working toy applications on [/examples](https://github.com/emilianobovetti/elm-toast/tree/master/examples), they can be ran simply by
-
-```sh
-git clone git@github.com:emilianobovetti/elm-toast.git
-cd elm-toast/examples
-yarn
-
-# run trivial example
-yarn start src/Basic.elm
-
-# run full-fledged thing
-yarn start src/Complete.elm
 ```
 
 ## You Might Ask

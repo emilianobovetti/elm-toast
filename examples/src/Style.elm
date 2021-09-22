@@ -138,9 +138,7 @@ global =
   height: 100%;
   box-shadow: 2px 2px 5px 1px #999;
   opacity: 0.5;
-  transition:
-    opacity 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .toast--active {
