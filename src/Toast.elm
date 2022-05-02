@@ -1,7 +1,7 @@
 module Toast exposing
     ( persistent, expireIn, expireOnBlur
     , withExitTransition
-    , Tray, tray
+    , Toast, Tray, tray
     , add, addUnique, addUniqueBy, addUniqueWith
     , Msg, update, tuple
     , Config, config, render
@@ -28,7 +28,7 @@ in the Elm architecture.
 
 # Start with an empty tray, add your toasts
 
-@docs Tray, tray
+@docs Toast, Tray, tray
 @docs add, addUnique, addUniqueBy, addUniqueWith
 
 
@@ -75,6 +75,10 @@ type alias Toast_ content =
     }
 
 
+{-| `Toast.Toast` is something you'll need if you have to reference
+the output type of [persistent](#persistent), [expireIn](#expireIn), [expireOnBlur](#expireOnBlur),
+this is one of those things you'll know when you need it, so don't worry about this.
+-}
 type alias Toast content =
     Private (Toast_ content)
 
