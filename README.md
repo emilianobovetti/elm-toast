@@ -8,7 +8,7 @@ See online examples of a [trivial app](https://ellie-app.com/fz2FLpBJX4Sa1) and 
 
 ## Toast
 
-We serve three kind of toasts:
+We serve three kinds of toasts:
 
 ```elm
 import Toast
