@@ -1,7 +1,7 @@
 module Toast exposing
     ( persistent, expireIn, expireOnBlur
     , withExitTransition
-    , Toast, Tray, tray
+    , Toast, Id, Tray, tray
     , add, addUnique, addUniqueBy, addUniqueWith
     , Msg, update, tuple
     , Config, config, render
@@ -28,7 +28,7 @@ in the Elm architecture.
 
 # Start with an empty tray, add your toasts
 
-@docs Toast, Tray, tray
+@docs Toast, Id, Tray, tray
 @docs add, addUnique, addUniqueBy, addUniqueWith
 
 
@@ -83,8 +83,11 @@ type alias Toast content =
     Private (Toast_ content)
 
 
+{-| The toast id is needed to reference a single Toast instance,
+for example when you want to close it.
+-}
 type alias Id =
-    Int
+    Private Int
 
 
 {-| A toast go through three phases:
@@ -142,7 +145,7 @@ type Lifespan
 new : Lifespan -> content -> Toast content
 new lifespan content =
     Private
-        { id = -1
+        { id = Private -1
         , blurCount = 0
         , phase = Enter
         , interaction = Blur
@@ -240,7 +243,7 @@ type alias Tray content =
 tray : Tray content
 tray =
     Private
-        { currentId = 0
+        { currentId = Private 0
         , toasts = []
         }
 
@@ -306,9 +309,14 @@ internalAdd model toast =
         toasts =
             model.toasts ++ [ { toast | id = id } ]
     in
-    { model | currentId = id + 1, toasts = toasts }
+    { model | currentId = nextId id, toasts = toasts }
         |> Private
         |> withCmds (delay 100 (Transition In id) :: onEnter id toast.lifespan)
+
+
+nextId : Id -> Id
+nextId (Private id) =
+    Private (id + 1)
 
 
 {-| Add a toast to a tray, produces an updated tray and a `Cmd Toast.Msg`.
@@ -767,7 +775,7 @@ that you need to pass to [Toast.remove](#remove) and [Toast.exit](#exit).
 
 -}
 type alias Info content =
-    { id : Private Id
+    { id : Id
     , phase : Phase
     , interaction : Interaction
     , content : content
@@ -776,7 +784,7 @@ type alias Info content =
 
 toInfo : Toast_ content -> Info content
 toInfo toast =
-    { id = Private toast.id
+    { id = toast.id
     , phase = toast.phase
     , interaction = toast.interaction
     , content = toast.content
@@ -789,9 +797,14 @@ renderToast :
     -> Toast_ content
     -> ( String, Html msg )
 renderToast viewer cfg toast =
-    ( "toast-" ++ String.fromInt toast.id
+    ( toastKey toast.id
     , viewer (allToastAttributes cfg toast) (toInfo toast)
     )
+
+
+toastKey : Id -> String
+toastKey (Private id) =
+    "toast-" ++ String.fromInt id
 
 
 {-| This function is where our money are: all our data shrunk down
@@ -851,15 +864,15 @@ If you want to go through the exit transition use [exit](#exit).
             ]
 
 -}
-remove : Private Id -> Msg
-remove (Private id) =
-    Remove id
+remove : Id -> Msg
+remove =
+    Remove
 
 
 {-| Same as [remove](#remove), but the toast goes through
 its exit transition phase.
 If you have a fade-out animation it'll be showed.
 -}
-exit : Private Id -> Msg
-exit (Private id) =
-    Transition Exit id
+exit : Id -> Msg
+exit =
+    Transition Exit
